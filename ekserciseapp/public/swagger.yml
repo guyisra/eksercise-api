@@ -1,0 +1,167 @@
+swagger: '2.0'
+info:
+  description: >-
+    This is the API for the Yellow Pages service you need to interact with as
+    part of your home exercise. The service allows querying for people based on
+    a combination of age, name and phone number. For this sample, you can use
+    the api key `totally-authed` to test the authorization filters.
+  version: 1.0.0
+  title: Yellow Pages
+host: '???'
+basePath: /
+tags:
+  - name: people
+    description: Search for people by age/name/phone
+schemes:
+  - http
+security:
+  - api_key: []
+paths:
+  /people/search:
+    post:
+      tags:
+        - people
+      summary: Create a new people search request
+      description: >-
+        This service does not offer synchronous seraches as queries can take the
+        server a while to complete. Instead, the first step in searching for a
+        set of people is creating a search request. You will later use the
+        request identifier your receive to poll for your desired results.
+      operationId: createSearchRequest
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: name
+          description: Name (or part of the name) you are looking for
+          required: false
+          type: string
+        - in: query
+          name: age
+          description: Age (in years) you are looking for
+          required: false
+          type: integer
+        - in: query
+          name: phone
+          description: Phone number (or part of it) you are looking for
+          required: false
+          type: string
+        - in: query
+          name: page
+          description: >-
+            Result page number you wish to retrieve (pages always contain 25
+            results at most). Defaults to 1.
+          required: false
+          default: 1
+          type: integer
+      responses:
+        '201':
+          description: >-
+            A new query has been created and its ID is available in the response
+            body.
+          schema:
+            $ref: '#/definitions/SearchRequestToken'
+        '401':
+          $ref: '#/responses/Unauthorized'
+        '405':
+          description: Invalid input. You need to specify at least one search parameter.
+  /people:
+    get:
+      tags:
+        - people
+      summary: Get the result of a previously created search request
+      description: >-
+        Once you've created a search request, you can sample the server for the
+        actual set of people which is the query result.
+      operationId: getSearchResults
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: searchRequestId
+          description: Id of the search request for which to get results
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '102':
+          description: The search request is still processing.
+        '200':
+          description: >-
+            The search results are available and are contained in the response
+            body.
+          schema:
+            $ref: '#/definitions/PeopleList'
+        '401':
+          $ref: '#/responses/Unauthorized'
+        '404':
+          description: >-
+            The supplied searchRequestId does not correspond to any active
+            search requests.
+responses:
+  Unauthorized:
+    description: The API key is missing or invalid.
+    headers:
+      WWW_Authenticate:
+        type: string
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: api_key
+    in: header
+definitions:
+  SearchRequestToken:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+        example: def29dc2-2255-4f13-90ec-26c0fee82317
+  PeopleList:
+    type: array
+    title: People
+    items:
+      $ref: '#/definitions/Person'
+  Person:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique identifier for this specific person.
+        example: b01a0e23da718a08989311b8b2dfb069
+      name:
+        type: string
+        example: Rick Sanchez
+      phone:
+        type: string
+        example: 7350-01794
+      picture:
+        type: string
+        format: url
+        example: 'https://68.media.tumblr.com/avatar_6eadd00cd59f_128.png'
+      email:
+        type: string
+        format: email
+        example: rick@rickamaroo.com
+      birthday:
+        type: integer
+        format: unix timestamp
+        example: -112240800
+      address:
+        $ref: '#/definitions/Address'
+  Address:
+    type: object
+    properties:
+      city:
+        type: string
+        example: Seattle
+      street:
+        type: string
+        example: REDACTED
+      country:
+        type: string
+        example: USA
