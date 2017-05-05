@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails'
 gem 'pg'
 gem 'puma'
+gem 'rails'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
@@ -12,7 +13,6 @@ gem 'puma'
 gem 'jbuilder', '~> 2.0'
 
 gem 'kaminari'
-
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -25,11 +25,11 @@ gem 'kaminari'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'listen'
-  gem 'rubocop'
   gem 'byebug'
+  gem 'listen'
   gem 'pry'
   gem 'pry-byebug'
+  gem 'rubocop'
 end
 
 group :development do
