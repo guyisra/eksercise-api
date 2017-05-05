@@ -4,7 +4,7 @@ File.readlines('db/people.json').each do |line|
               name: user['name'],
               birthday: user['birthday'].to_i,
               phone: user['phone'],
-              avatar: user['avatar_image'],
+              avatar: user['avatar_origin'],
               email: user['email'],
               quote: user['quote'],
               chuck: user['chuck'],
