@@ -6,7 +6,7 @@ class PeopleController < ApplicationController
 
     guid = SecureRandom.uuid
     $redis.mapped_hmset("requests:#{guid}", req_data)
-    $redis.set("requests:#{guid}:ttl", 'nope', ex: Random.new.rand(0.5..7))
+    $redis.set("requests:#{guid}:ttl", 'nope', px: Random.new.rand(1..777))
 
     render json: { id: guid }, status: 201
   end
