@@ -6,4 +6,10 @@ class ApplicationController < ActionController::Base
   def root
     render 'application/swagger.html'
   end
+
+  protected
+
+  def redis
+    Redis.current
+  end
 end

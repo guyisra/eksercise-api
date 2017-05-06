@@ -5,8 +5,8 @@ class PeopleController < ApplicationController
     return head :method_not_allowed if invalid_request?
 
     guid = SecureRandom.uuid
-    $redis.mapped_hmset("requests:#{guid}", req_data)
-    $redis.set("requests:#{guid}:ttl", 'nope', px: Random.new.rand(1..777))
+    redis.mapped_hmset("requests:#{guid}", req_data)
+    redis.set("requests:#{guid}:ttl", 'nope', px: Random.new.rand(1..777))
 
     render json: { id: guid }, status: 201
   end
@@ -14,9 +14,9 @@ class PeopleController < ApplicationController
   def index
     guid = params['searchRequestId']
 
-    return head :processing if $redis.get("requests:#{guid}:ttl").present?
+    return head :processing if redis.get("requests:#{guid}:ttl").present?
 
-    req = $redis.hgetall("requests:#{guid}").symbolize_keys
+    req = redis.hgetall("requests:#{guid}").symbolize_keys
 
     return head :not_found if req.empty?
 
@@ -37,7 +37,7 @@ class PeopleController < ApplicationController
 
   def req_data
     {
-      page:  params[:page] || 1,
+      page:  params[:page] || '1',
       age:   params[:age],
       name:  params[:name],
       phone: params[:phone]

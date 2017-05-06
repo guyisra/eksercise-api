@@ -3,8 +3,8 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  post "/people/search", to: 'people#search'
-  get "/people", to: 'people#index'
+  post '/people/search', to: 'people#search'
+  get '/people', to: 'people#index'
 
   root 'application#root'
 end

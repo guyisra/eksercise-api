@@ -29,7 +29,10 @@ group :development, :test do
   gem 'listen'
   gem 'pry'
   gem 'pry-byebug'
+  gem 'rspec'
+  gem 'rspec-rails'
   gem 'rubocop'
+  gem 'simplecov', require: false
 end
 
 group :development do
