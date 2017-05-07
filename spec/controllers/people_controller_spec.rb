@@ -7,11 +7,14 @@ describe PeopleController do
   let(:redis) { double(:redis) }
   let(:req_params) { { age: '7', name: 'me', phone: '638-2020' } }
 
+  before do
+    allow(Redis).to receive(:current).and_return redis
+  end
+
   describe '#search' do
     let(:do_action) { post :search, params: req_params }
     before do
       allow(SecureRandom).to receive(:uuid).and_return guid
-      allow(Redis).to receive(:current).and_return redis
       allow(redis).to receive(:mapped_hmset)
       allow(redis).to receive(:set)
       allow(redis).to receive(:expire)
@@ -51,5 +54,16 @@ describe PeopleController do
   end
 
   describe '#index' do
+    let(:do_action) { get :index, params: { searchRequestId: guid } }
+
+    context "still 'processing'" do
+      before do
+        allow(redis).to receive(:get).with("requests:#{guid}:ttl").and_return([true])
+      end
+      it 'returns 102' do
+        do_action
+        expect(response.status).to eq 102
+      end
+    end
   end
 end

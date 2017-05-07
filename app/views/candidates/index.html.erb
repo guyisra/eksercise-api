@@ -1,0 +1,42 @@
+
+
+<div class="interviewer_explanation">
+ Before sending the candidate the email, please add the candidate here,
+ and provide them with the key
+</div>
+
+
+
+<div class="candidate_main">
+
+  New Candidate:
+  <%= form_for Candidate.new, html: {class: "pure-form"} do |f| %>
+   <fieldset>
+   <%= f.text_field :name, placeholder: "Candidate Name"%>
+   <%= f.submit "Add", class: "pure-button pure-button-primary" %>
+  </fieldset>
+  <% end %>
+
+
+  <table class="pure-table  pure-table-bordered">
+  <thead>
+    <tr>
+     <th>name</th>
+     <th>key</th>
+     <th>evil?</th>
+    </tr>
+   </thead>
+    <% @candidates.each do |candidate| %>
+      <tr>
+        <td><%= candidate.name %></td>
+        <td><%= candidate.key %></td>
+        <td>
+        <% candidate.attribute_names.select{|x| x.starts_with?("evil")}.map do |attr| %>
+            <%= button_to attr.titleize, candidate_evil_path(@profile, id: candidate.id, attr: attr), method: :post, class: "evil #{candidate.send(attr) ? 'it-been-done' : ''} pure-button" %>
+        <% end %>
+       </td>
+      </tr>
+    <% end %>
+  </table>
+
+</div>

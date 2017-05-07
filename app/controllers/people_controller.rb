@@ -13,7 +13,7 @@ class PeopleController < ApplicationController
   def index
     guid = params['searchRequestId']
 
-    return head :processing if guid_processing
+    return head :processing if guid_processing(guid)
 
     req = redis.hgetall("requests:#{guid}").symbolize_keys
 
@@ -36,7 +36,7 @@ class PeopleController < ApplicationController
     redis.set("requests:#{guid}:ttl", 'nope', px: Random.new.rand(1..777))
   end
 
-  def guid_processing
+  def guid_processing(guid)
     redis.get("requests:#{guid}:ttl").present?
   end
 
