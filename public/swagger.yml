@@ -14,7 +14,7 @@ tags:
   - name: people
     description: Search for people by age/name/phone
 schemes:
-  - https
+  - http, https
 security:
   - api_key: []
 paths:
