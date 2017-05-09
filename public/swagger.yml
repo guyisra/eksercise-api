@@ -3,17 +3,18 @@ info:
   description: >-
     This is the API for the Yellow Pages service you need to interact with as
     part of your home exercise. The service allows querying for people based on
-    a combination of age, name and phone number. For this sample, you can use
-    the api key `totally-authed` to test the authorization filters.
+    a combination of age, name and phone number. For authorization purposes, please
+    supply the API key you were sent along with this assignment. If you did not
+    receive a key, please contact your interviewer(s).
   version: 1.0.0
   title: Yellow Pages
-host: '???'
+host: 'eksercise-api.herokuapp.com'
 basePath: /
 tags:
   - name: people
     description: Search for people by age/name/phone
 schemes:
-  - http
+  - https
 security:
   - api_key: []
 paths:
@@ -74,7 +75,8 @@ paths:
       summary: Get the result of a previously created search request
       description: >-
         Once you've created a search request, you can sample the server for the
-        actual set of people which is the query result.
+        actual set of people which is the query result. Result sets are guaranteed to
+        be available for at least 5 minutes after the query completes.
       operationId: getSearchResults
       consumes:
         - application/json
@@ -106,12 +108,12 @@ responses:
   Unauthorized:
     description: The API key is missing or invalid.
     headers:
-      WWW_Authenticate:
+      X-KLARNA-TOKEN:
         type: string
 securityDefinitions:
   api_key:
     type: apiKey
-    name: api_key
+    name: X-KLARNA-TOKEN
     in: header
 definitions:
   SearchRequestToken:

@@ -11,6 +11,8 @@ class User < ApplicationRecord
                  }
   scope :by_phone, ->(phone) { where('phone LIKE ?', "%#{phone}%") if phone.present? }
 
+  scope :wrong, -> { where(uid: "12345") }
+
   def as_json(_)
     {
       'id'       => uid,

@@ -2,13 +2,13 @@ class CandidatesController < ApplicationController
   http_basic_authenticate_with name: 'klarna', password: 'do_no_evil'
 
   def create
-    candy = Candidate.create(allowed_params.merge(key: SecureRandom.uuid))
+    Candidate.create(allowed_params.merge(key: SecureRandom.uuid))
 
     redirect_to :back
   end
 
   def index
-    @candidates = Candidate.all
+    @candidates = Candidate.not_expired
 
     @candidates = @candidates.where('name ILIKE ?', "%#{params[:name]}%") if params[:name]
 
