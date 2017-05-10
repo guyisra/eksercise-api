@@ -2,7 +2,6 @@
 
 class PeopleController < ApplicationController
   before_action :check_candidate_token
-
   before_action :evil_long_response
 
   def search
@@ -36,7 +35,7 @@ class PeopleController < ApplicationController
 
   def store_req_data(guid)
     redis.mapped_hmset("requests:#{guid}", req_data)
-    redis.expire("requests:#{guid}", evil_query_expiry)
+    redis.expire("requests:#{guid}", 5.minutes)
     redis.set("requests:#{guid}:ttl", 'nope', px: Random.new.rand(1..777))
   end
 
@@ -74,7 +73,7 @@ class PeopleController < ApplicationController
                  User.wrong
                else
                  people.or(User.wrong)
-              end
+               end
     end
 
     people = malform(people) if current_candidate.evil_malformed? && people.present?
@@ -87,14 +86,6 @@ class PeopleController < ApplicationController
   end
 
   def evil_long_response
-    sleep Random.new.rand(5..15).seconds if current_candidate.evil_long_response?
-  end
-
-  def evil_query_expiry
-    if current_candidate.evil_expiry?
-      Random.new.rand(1..5).seconds
-    else
-      5.minutes
-    end
+    sleep 45.seconds if current_candidate.evil_long_response?
   end
 end
