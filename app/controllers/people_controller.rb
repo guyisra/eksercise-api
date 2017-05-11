@@ -4,19 +4,19 @@ class PeopleController < ApplicationController
   before_action :check_candidate_token
   before_action :evil_long_response
 
+  before_action :evil_throttling, only: :index
+
   def search
     return head :method_not_allowed if invalid_request?
 
-    guid = SecureRandom.uuid
-    store_req_data(guid)
+    request_token = SecureRandom.uuid
+    store_req_data(request_token)
 
-    render json: { id: guid }, status: 201
+    render json: { id: request_token }, status: 201
   end
 
   def index
-    guid = params['searchRequestId']
-
-    return head :processing if guid_processing(guid)
+    return head :processing if guid_processing
 
     req = redis.hgetall("requests:#{guid}").symbolize_keys
 
@@ -33,13 +33,17 @@ class PeopleController < ApplicationController
 
   private
 
-  def store_req_data(guid)
-    redis.mapped_hmset("requests:#{guid}", req_data)
-    redis.expire("requests:#{guid}", 5.minutes)
-    redis.set("requests:#{guid}:ttl", 'nope', px: Random.new.rand(1..777))
+  def guid
+    params['searchRequestId']
   end
 
-  def guid_processing(guid)
+  def store_req_data(request_token)
+    redis.mapped_hmset("requests:#{request_token}", req_data)
+    redis.expire("requests:#{request_token}", 5.minutes)
+    redis.set("requests:#{request_token}:ttl", 'nope', px: Random.new.rand(1000..7777))
+  end
+
+  def guid_processing
     redis.get("requests:#{guid}:ttl").present?
   end
 
@@ -48,7 +52,7 @@ class PeopleController < ApplicationController
   end
 
   def current_candidate
-    Candidate.find_by_key(request.headers['HTTP_API_KEY'])
+    Candidate.find_by_key(request.headers['X-KLARNA-TOKEN'])
   end
 
   def req_data
@@ -87,5 +91,18 @@ class PeopleController < ApplicationController
 
   def evil_long_response
     sleep 45.seconds if current_candidate.evil_long_response?
+  end
+
+  def evil_throttling
+    return unless current_candidate.evil_throttling?
+
+    throttling_key = "throttling:#{guid}"
+
+    if redis.get(throttling_key).to_i > 3
+      redis.expire(throttling_key, Random.new.rand(5..10)) # tsk tsk, doesn't play nice
+
+      return head :too_many_requests, retry_after: redis.ttl(throttling_key)
+    end
+    redis.expire(throttling_key, Random.new.rand(5..10)) if redis.incr(throttling_key).to_i == 1
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170510103030) do
+ActiveRecord::Schema.define(version: 20170511063015) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20170510103030) do
     t.boolean  "evil_long_response", default: false
     t.boolean  "evil_malformed",     default: false
     t.boolean  "evil_wrong_results", default: false
+    t.boolean  "evil_throttling",    default: false
   end
 
   create_table "users", force: :cascade do |t|
