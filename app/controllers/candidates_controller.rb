@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CandidatesController < ApplicationController
   http_basic_authenticate_with name: 'klarna', password: 'do_no_evil'
 
@@ -12,7 +14,7 @@ class CandidatesController < ApplicationController
 
     @candidates = @candidates.where('name ILIKE ?', "%#{params[:name]}%") if params[:name]
 
-    @candidates = @candidates.order("created_at DESC")
+    @candidates = @candidates.order('created_at DESC')
 
     respond_to do |format|
       format.json { render json: @candidates }

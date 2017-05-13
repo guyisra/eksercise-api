@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -14,6 +16,7 @@ gem 'rails_12factor', group: :production
 
 group :development, :test do
   gem 'byebug'
+  gem 'database_cleaner'
   gem 'listen'
   gem 'pry'
   gem 'pry-byebug'
@@ -21,7 +24,6 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rubocop'
   gem 'simplecov', require: false
-  gem 'database_cleaner'
 end
 
 group :development do

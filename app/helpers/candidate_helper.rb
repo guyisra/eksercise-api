@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module CandidateHelper
   def invitation_mail(key)
-    mail_to 'candidate@email.com', target: '_blank', body: body(key), cc: "adi.bartal@klarna.com", subject: 'Klarna Home Exercise' do
+    mail_to 'candidate@email.com', target: '_blank', body: body(key), cc: 'adi.bartal@klarna.com', subject: 'Klarna Home Exercise' do
       image_tag asset_path('mail.svg'), class: 'envelope'
     end
   end

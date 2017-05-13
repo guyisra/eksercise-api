@@ -1,4 +1,5 @@
-class Candidate < ApplicationRecord
+# frozen_string_literal: true
 
- scope :not_expired, -> { where("created_at > ? ", 1.month.ago)}
+class Candidate < ApplicationRecord
+  scope :not_expired, -> { where('created_at > ? ', 1.month.ago) }
 end

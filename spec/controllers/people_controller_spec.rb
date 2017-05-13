@@ -210,9 +210,29 @@ describe PeopleController do
         end
 
         context 'evil throttling' do
+          let(:evil_throttling) { true }
+
+          it 'throttles' do
+            allow_any_instance_of(described_class).to receive(:throttle!)
+
+            do_action
+          end
         end
 
         context 'evil wrong results' do
+          let(:evil_wrong_results) { true }
+          before do
+            User.create(uid: '12345', name: 'WRONG!!')
+          end
+
+          it 'return a wrong result' do
+            do_action
+
+            expect(JSON.parse(response.body)).to include(hash_including(
+                                                           'id'   => '12345',
+                                                           'name' => 'WRONG!!'
+            ))
+          end
         end
       end
     end
