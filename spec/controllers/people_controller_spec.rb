@@ -69,6 +69,10 @@ describe PeopleController do
     end
 
     context 'not authorized' do
+      it 'return not_authorized status' do
+        do_action
+        expect(response.status).to eq 401
+      end
     end
   end
 
@@ -94,6 +98,10 @@ describe PeopleController do
     end
 
     context 'not authorized' do
+      it 'return not_authorized status' do
+        do_action
+        expect(response.status).to eq 401
+      end
     end
   end
 end
