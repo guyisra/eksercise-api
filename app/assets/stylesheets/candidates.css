@@ -1,49 +1,54 @@
-/*
-  Place all the styles related to the matching controller here.
-  They will automatically be included in application.css.
-*/
+/**
+ * Place all the styles related to the matching controller here. They will
+ * automatically be included in application.css.
+ */
 
-body{
- background: #0078e7;
+body {
+  background : #0078e7;
 }
 
-.candidate_main{
-    width: 80%;
-    margin: auto;
-    text-align: center;
-    margin-top: 20px;
-    padding: 20px;
-    background: white;
-    border-radius: 5px;
- }
-
- .interviewer_explanation{
-    color: white;
-    margin: auto;
-    margin-top: 20px;
-    width: 80%;
-    padding: 20px;
-    text-align: center;
- }
-
- .button_to{
-  display: inline-block;
- }
-
-.evil{
- font-size: 50%;
- margin: 5px;
+.envelope {
+  width          : 20px;
+  vertical-align : middle;
 }
 
-.it-been-done{
- background: red;
- color: white
+.candidate_main {
+  width         : 80%;
+  margin        : auto;
+  margin-top    : 20px;
+  padding       : 20px;
+  border-radius : 5px;
+  background    : white;
+  text-align    : center;
 }
 
-table{
- width: 100%;
+.interviewer_explanation {
+  width      : 80%;
+  margin     : auto;
+  margin-top : 20px;
+  padding    : 20px;
+  color      : white;
+  text-align : center;
 }
 
-th{
- text-align: center;
+.button_to {
+  display : inline-block;
+}
+
+.evil {
+  margin    : 5px;
+  font-size : 50%;
+}
+
+.it-been-done {
+  color      : white;
+  background : red;
+}
+
+table {
+  width : 100%;
+}
+
+th {
+  text-align : center;
 }

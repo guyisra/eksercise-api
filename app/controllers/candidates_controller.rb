@@ -12,7 +12,7 @@ class CandidatesController < ApplicationController
 
     @candidates = @candidates.where('name ILIKE ?', "%#{params[:name]}%") if params[:name]
 
-    @candidates = @candidates.order(:created_at)
+    @candidates = @candidates.order("created_at DESC")
 
     respond_to do |format|
       format.json { render json: @candidates }
