@@ -21,11 +21,11 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rubocop'
   gem 'simplecov', require: false
+  gem 'database_cleaner'
 end
 
 group :development do
   gem 'web-console', '~> 3.0'
-
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
