@@ -86,7 +86,20 @@ class PeopleController < ApplicationController
   end
 
   def malform(people)
-    people.to_json.insert(42, JSON.parse(Net::HTTP.get(URI('http://hipsterjesus.com/api/?paras=1&html=false')))['text'])
+    malform_method = Random.new.rand(0..4)
+
+    case malform_method
+      when 0
+        people.to_json.insert(0, JSON.parse(Net::HTTP.get(URI('http://hipsterjesus.com/api/?paras=1&html=false')))['text'])
+      when 1
+        people.to_json.tr('"', '!')
+      when 2
+        people.to_json.gsub(',', 'comma')
+      when 3
+        people.to_json.reverse
+      when 4
+        people.to_json.split('').shuffle.join
+    end
   end
 
   def evil_long_response
