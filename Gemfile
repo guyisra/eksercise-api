@@ -10,6 +10,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'kaminari'
 gem 'redis'
 
+gem 'rails_12factor', group: :production
 
 group :development, :test do
   gem 'byebug'
