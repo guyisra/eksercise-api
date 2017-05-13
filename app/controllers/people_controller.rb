@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class PeopleController < ApplicationController
+  include Throttler
   before_action :check_candidate_token
   before_action :evil_long_response
 
@@ -109,13 +110,6 @@ class PeopleController < ApplicationController
   def evil_throttling
     return unless current_candidate.evil_throttling?
 
-    throttling_key = "throttling:#{guid}"
-
-    if redis.get(throttling_key).to_i > 3
-      redis.expire(throttling_key, Random.new.rand(5..10)) # tsk tsk, doesn't play nice
-
-      return head :too_many_requests, retry_after: redis.ttl(throttling_key)
-    end
-    redis.expire(throttling_key, Random.new.rand(5..10)) if redis.incr(throttling_key).to_i == 1
+    throttle!
   end
 end
