@@ -110,6 +110,7 @@ class PeopleController < ApplicationController
   def evil_throttling
     return unless current_candidate.evil_throttling?
 
-    throttle!
+    penalty = throttle!
+    return head :too_many_requests, retry_after: penalty if penalty
   end
 end

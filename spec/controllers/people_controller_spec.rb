@@ -213,9 +213,10 @@ describe PeopleController do
           let(:evil_throttling) { true }
 
           it 'throttles' do
-            allow_any_instance_of(described_class).to receive(:throttle!)
+            allow_any_instance_of(described_class).to receive(:throttle!).and_return 10
 
             do_action
+            expect(response.status).to eq 429
           end
         end
 
@@ -232,6 +233,19 @@ describe PeopleController do
                                                            'id'   => '12345',
                                                            'name' => 'WRONG!!'
             ))
+          end
+
+          context 'blank results' do
+            let(:request_params) { base_params.merge(page: 100) }
+
+            it 'returns the wrong user' do
+              do_action
+
+              expect(JSON.parse(response.body)).to include(hash_including(
+                                                             'id'   => '12345',
+                                                             'name' => 'WRONG!!'
+              ))
+            end
           end
         end
       end
