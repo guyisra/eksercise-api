@@ -1,0 +1,55 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://hipsterjesus.com/api/?html=false&paras=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - hipsterjesus.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sun, 14 May 2017 04:16:19 GMT
+      Server:
+      - Apache
+      X-Powered-By:
+      - PHP/5.4.4
+      Set-Cookie:
+      - hipsterjesus=s85dsb6jplv3f6tddvonlq5bj7; path=/
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Cache-Control:
+      - no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+      Pragma:
+      - no-cache
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Length:
+      - '641'
+      Content-Type:
+      - application/json
+    body:
+      encoding: UTF-8
+      string: '{"text":"Mollit  bushwick occaecat  glossier hammock, duis  vice prism
+        chicharrones nisi eu.  Adipisicing activated charcoal disrupt seitan chartreuse
+        tumblr flannel.  Pok pok asymmetrical ea chia vexillologist plaid.  XOXO microdosing
+        craft beer mixtape, man bun tumblr venmo cupidatat  four loko biodiesel chillwave.  Mumblecore
+        subway tile viral, snackwave before they sold out paleo irure  offal master
+        cleanse everyday carry yuccie labore.  Hoodie anim  crucifix velit, sunt DIY
+        truffaut irure  snackwave selfies succulents ad lyft sed non.  Austin artisan
+        lo-fi retro, minim hella bespoke.","params":{"paras":1,"type":"hipster-latin"}}'
+    http_version: 
+  recorded_at: Sun, 14 May 2017 04:16:20 GMT
+recorded_with: VCR 3.0.3

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe PeopleController do
+describe PeopleController, :vcr do
   let(:guid) { '12345' }
   let(:redis) { double(:redis) }
   let(:req_params) { { age: '7', name: 'me', phone: '638-2020' } }
@@ -114,6 +114,7 @@ describe PeopleController do
 
         context 'by name' do
           let(:request_params) { base_params.merge(name: name) }
+
           before do
             User.create(uid: 'name', name: name)
           end
@@ -127,6 +128,7 @@ describe PeopleController do
 
         context 'by age' do
           let(:request_params) { base_params.merge(age: age) }
+
           before do
             User.create(uid: 'name', birthday: 30.years.ago.to_i)
           end
@@ -160,6 +162,7 @@ describe PeopleController do
 
           context 'first page' do
             let(:request_params) { base_params.merge(page: 1, phone: phone) }
+
             it 'returns 25 results' do
               do_action
 
@@ -182,11 +185,13 @@ describe PeopleController do
 
       context 'evil things' do
         let(:request_params) { base_params.merge(name: 'Jim') }
+
         before do
           allow(redis).to receive(:get).with("requests:#{guid}:ttl").and_return(nil)
           allow(redis).to receive(:hgetall).and_return(request_params)
           User.create(name: 'Jim')
         end
+
         context 'evil malform' do
           let(:evil_malformed) { true }
 
@@ -202,6 +207,7 @@ describe PeopleController do
 
         context 'evil long response' do
           let(:evil_long_response) { true }
+
           it 'sleeps' do
             allow_any_instance_of(Object).to receive(:sleep).with(45.seconds).and_return true
 
@@ -222,6 +228,7 @@ describe PeopleController do
 
         context 'evil wrong results' do
           let(:evil_wrong_results) { true }
+
           before do
             User.create(uid: '12345', name: 'WRONG!!')
           end

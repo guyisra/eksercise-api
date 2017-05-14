@@ -68,3 +68,25 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 end
+
+
+require 'vcr'
+require 'webmock/rspec'
+
+VCR.configure do |c|
+  c.cassette_library_dir = Rails.root.join('spec', 'vcr')
+  c.hook_into :webmock
+  c.default_cassette_options = { record: :all } if ENV['RERECORD']
+  c.default_cassette_options = { match_requests_on: [:method, :uri, :headers] }
+end
+
+RSpec.configure do |c|
+  c.around(:each, :vcr) do |example|
+    name = example.metadata[:full_description].split(/\s+/, 2).join('/').underscore.gsub(/[^\w\/]+/, '_')
+    if example.metadata.include?(:cassette_options)
+      VCR.use_cassette(name, example.metadata[:cassette_options]) { example.call }
+    else
+      VCR.use_cassette(name) { example.call }
+    end
+  end
+end
