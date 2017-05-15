@@ -209,7 +209,7 @@ describe PeopleController, :vcr do
           let(:evil_long_response) { true }
 
           it 'sleeps' do
-            allow_any_instance_of(Object).to receive(:sleep).with(45.seconds).and_return true
+            expect_any_instance_of(Object).to receive(:sleep).with(28.seconds).and_return true
 
             do_action
           end

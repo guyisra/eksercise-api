@@ -104,7 +104,7 @@ class PeopleController < ApplicationController
   end
 
   def evil_long_response
-    sleep 45.seconds if current_candidate.evil_long_response?
+    sleep 28.seconds if current_candidate.evil_long_response?
   end
 
   def evil_throttling
