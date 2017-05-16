@@ -3,7 +3,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
-  after_action :cors_fix
+  after_action :cors_fix, only: :root
 
   def root
     render 'application/swagger.html'
