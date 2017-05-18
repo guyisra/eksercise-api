@@ -46,7 +46,7 @@
     <% @candidates.each do |candidate| %>
       <tr>
         <td><%= candidate.name %></td>
-        <td><%= candidate.key %> <%= invitation_mail(candidate.key) %></td>
+        <td><%= candidate.key %> <%= invitation_mail(candidate.key, @template) %></td>
         <td>
         <% candidate.attribute_names.select{|x| x.starts_with?("evil")}.map do |attr| %>
             <%= button_to attr.titleize, candidate_evil_path(@profile, id: candidate.id, attr: attr), method: :post, class: "evil #{candidate.send(attr) ? 'it-been-done' : ''} pure-button" %>

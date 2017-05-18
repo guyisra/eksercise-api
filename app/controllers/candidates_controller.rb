@@ -16,6 +16,8 @@ class CandidatesController < ApplicationController
 
     @candidates = @candidates.order('created_at DESC')
 
+    @template = File.read('app/helpers/email_template.txt.erb')
+
     respond_to do |format|
       format.json { render json: @candidates }
       format.html {}
