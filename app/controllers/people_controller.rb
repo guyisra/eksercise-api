@@ -5,7 +5,7 @@ class PeopleController < ApplicationController
   before_action :check_candidate_token
   before_action :evil_long_response
 
-  before_action :evil_throttling, only: :index
+  before_action :evil_throttling, only: [:search, :index]
 
   def search
     return head :method_not_allowed if invalid_request?
