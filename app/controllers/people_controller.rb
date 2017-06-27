@@ -41,7 +41,7 @@ class PeopleController < ApplicationController
   def store_req_data(request_token)
     redis.mapped_hmset("requests:#{request_token}", req_data)
     redis.expire("requests:#{request_token}", 5.minutes)
-    redis.set("requests:#{request_token}:ttl", 'nope', px: Random.new.rand(1000..7777))
+    redis.set("requests:#{request_token}:ttl", 'nope', px: Random.new.rand(3333..9999))
   end
 
   def guid_processing

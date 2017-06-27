@@ -21,10 +21,13 @@ describe Throttler do
   end
 
   describe '#throttle!' do
+    before do
+      allow(redis).to receive(:ttl).and_return '10'
+    end
+
     context 'over threshold' do
       before do
         allow(redis).to receive(:get).with(subject.throttling_key).and_return (Throttler::THRESHOLD + 10).to_s
-        allow(redis).to receive(:ttl).and_return '10'
         allow(redis).to receive(:expire)
       end
 

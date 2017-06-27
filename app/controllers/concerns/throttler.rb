@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Throttler
-  THRESHOLD = 3
+  THRESHOLD = 1
 
   def throttle!
     if over_threshold?
@@ -25,12 +25,13 @@ module Throttler
   end
 
   def extend_cooldown
-    redis.expire(throttling_key, Random.new.rand(5..10)) # tsk tsk, doesn't play nice
+    current_ttl = redis.ttl(throttling_key).to_i
+    redis.expire(throttling_key, current_ttl + Random.new.rand(5..10)) # tsk tsk, doesn't play nice
   end
 
   def handle_request
     if redis.incr(throttling_key).to_i == 1
-      redis.expire(throttling_key, Random.new.rand(5..10))
+      extend_cooldown
     end
   end
 end
